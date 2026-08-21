@@ -2,16 +2,6 @@
 # SPDX-FileCopyrightText: Copyright © 2026 OpenCHAMI a Series of LF Projects, LLC
 # SPDX-License-Identifier: MIT
 #
-# pcs-setup.sh - Integrate OpenCHAMI Power Control Service (PCS) with OpenBao.
-#
-# This script follows the same style and conventions as openbao-setup.sh.
-# It assumes an OpenCHAMI installation that already has OpenBao set up
-# (e.g. by running openbao-setup.sh).
-#
-# Usage: copy this script to the OpenCHAMI host and run as root:
-#   sudo ./pcs-setup.sh 2>&1 | tee pcs-setup.log
-#
-
 # The order in this script is relevant, as it will make changes, run
 # `systemctl daemon-reload`, start things, make other changes, reload the
 # daemon again etc...
