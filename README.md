@@ -19,9 +19,8 @@ sudo ./pcs-setup.sh 2>&1 | tee pcs-setup.log
 Use `-f` to force the script execution without interactive user confirmation.
 
 # Verification
+Make sure the Redfish endpoint exists in SMD, username and password are set (see OpenBao example), and Redfish discovery is in status "DiscoverOK".
 ```
-# make sure the Redfish endpoint exists in SMD, username and password are set
-# (see OpenBao example), and Redfish discovery is in status "DiscoverOK"
 [user@demo ~]$ ochami smd rfe get -x x5000c0s0b0 -F yaml
 RedfishEndpoints:
     - DiscoveryInfo:
@@ -40,29 +39,32 @@ RedfishEndpoints:
       Type: NodeBMC
       UUID: 00000000-0000-0000-0000-000000000000
       User: MY_BMC_USER
+```
 
-# If the discovery just ran, it might take a moment until the information is
-# synced to PCS
+If the discovery just ran, it might take a moment until the information is synced to PCS.
 
-# check the BMC power status
+Check the BMC's power status:
+```
 [user@demo ~]$ ochami pcs status show x5000c0s0b0 
 {"error":"","lastUpdated":"2026-08-21T07:51:52.35278Z","managementState":"available","powerState":"on","supportedPowerTransitions":["Soft-Restart"],"xname":"x5000c0s0b0"}
+```
 
-# check the node's power status - in this example it's currently off
+Check the node's power status. In this example, it's currently off.
+```
 [user@demo ~]$ ochami pcs status show x5000c0s0b0n0
 {"error":"","lastUpdated":"2026-08-21T07:57:56.958534Z","managementState":"available","powerState":"off","supportedPowerTransitions":["On","Force-Off","Soft-Off","Off","Soft-Restart","Init","Hard-Restart"],"xname":"x5000c0s0b0n0"}
+```
 
-# (!) known issue that will be fixed soon: The supported power transitions here
-# are given with mixed case letters, but a transition start command only works
-# with all lower case letters.
+A known issue that will be fixed soon: The supported power transitions here are given with mixed case letters, but the `transition start` command only works with all lower case letters.
 
-# boot the node
+Boot the node:
+```
 [user@demo ~]$ ochami pcs transition start --xname x5000c0s0b0n0 on
 {"TransitionID":"2d49b9fb-2f6c-4e9e-a8c8-6c0c6f9285c8","Operation":"On"}
+```
 
-# (!) just because the transition start command did not return an error does
-# not mean the transition itself was successful. Always check or monitor.
-
+(!) Note: Just because the `transition start` command did not return an error does not mean the transition itself was successful. It only means the command was accepted by PCS. Always check or monitor with the transition ID returned by the command.
+```
 [user@demo ~]$ ochami pcs transition show 2d49b9fb-2f6c-4e9e-a8c8-6c0c6f9285c8
 {"automaticExpirationTime":"2026-08-22T08:14:01.010959Z","createTime":"2026-08-21T08:14:01.010959Z","operation":"On","taskCounts":{"failed":0,"in-progress":1,"new":0,"succeeded":0,"total":1,"un-supported":0},"tasks":[{"taskStatus":"in-progress","taskStatusDescription":"Confirming successful transition, on","xname":"x5000c0s0b0n0"}],"transitionID":"2d49b9fb-2f6c-4e9e-a8c8-6c0c6f9285c8","transitionStatus":"in-progress"}
 
