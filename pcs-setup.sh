@@ -67,7 +67,7 @@ echo "Running pcs-setup. This will take a moment..."
 
 # preparations
 BACKUP_FILENAME_EXTENSION="pcs.bak.$(date +%Y%m%d%H%M)"
-PCS_IMAGE="ghcr.io/openchami/pcs:v2.12.1"
+PCS_IMAGE="ghcr.io/openchami/pcs:v2.12.2"
 HYDRA_ADMIN_URL="http://hydra:4445"
 
 ## TEMPORARY FIX: pull OCI image before coredns is down
@@ -474,13 +474,14 @@ fi
 unset LINENUM
 
 
+## fixed in a656abb https://github.com/OpenCHAMI/power-control/commit/a656abb075898035ec56f5e4b577715fdff48507
 # -----------------------------------------------------------------------------
 # openchami.env: disable SMD JWKS auth (PCS currently omits bearer token on
 # reservation lock requests)
 # -----------------------------------------------------------------------------
-cp /etc/openchami/configs/openchami.env /etc/openchami/configs/openchami.env.$BACKUP_FILENAME_EXTENSION
+#cp /etc/openchami/configs/openchami.env /etc/openchami/configs/openchami.env.$BACKUP_FILENAME_EXTENSION
 
-sed -i '/SMD_JWK/ s/^/#/' /etc/openchami/configs/openchami.env
+#sed -i '/SMD_JWK/ s/^/#/' /etc/openchami/configs/openchami.env
 
 
 # -----------------------------------------------------------------------------
