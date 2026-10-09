@@ -70,6 +70,9 @@ BACKUP_FILENAME_EXTENSION="pcs.bak.$(date +%Y%m%d%H%M)"
 PCS_IMAGE="ghcr.io/openchami/pcs:v2.12.1"
 HYDRA_ADMIN_URL="http://hydra:4445"
 
+## TEMPORARY FIX: pull OCI image before coredns is down
+podman pull $PCS_IMAGE
+
 mkdir -p /etc/openchami/pcs
 
 

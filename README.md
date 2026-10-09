@@ -1,3 +1,8 @@
+# Changes in dev branch
+> - pull OCI image before coredns is down, for reasons...
+> - use newer PCS release where the PCS to SMD authentication bug is fixed in a656abb
+> - remove insecure workaround that did disable SMD's auth
+
 # WARNING
 (!) Due to a bug in the current PCS version (soon to be fixed), token authentication in SMD has do be disabled. Which is what this script does.
 Use for test systems only, not in a productive environment!
